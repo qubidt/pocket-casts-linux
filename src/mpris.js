@@ -65,9 +65,18 @@ module.exports.init = window => {
     process.exit();
   });
 
-  player.on(MPRIS_EVENTS.IS_PLAYING_CHANGE, () =>
+  player.on(MPRIS_EVENTS.PLAYPAUSE, () => {
+    console.log(`MPRIS_EVENTS.PLAYPAUSE: ${player.playbackStatus}`);
     send(IPC_EVENTS.SET_PLAYING, !statusToBool(player.playbackStatus))
-  );
-  player.on(MPRIS_EVENTS.SKIP_BACK, () => send(IPC_EVENTS.SKIP_BACK));
-  player.on(MPRIS_EVENTS.SKIP_FORWARD, () => send(IPC_EVENTS.SKIP_FORWARD));
+  });
+
+  player.on(MPRIS_EVENTS.SKIP_BACK, () => {
+    console.log("MPRIS_EVENTS.SKIP_BACK");
+    send(IPC_EVENTS.SKIP_BACK);
+  });
+
+  player.on(MPRIS_EVENTS.SKIP_FORWARD, () => {
+    console.log("MPRIS_EVENTS.SKIP_FORWARD");
+    send(IPC_EVENTS.SKIP_FORWARD);
+  })
 };
