@@ -70,6 +70,16 @@ module.exports.init = window => {
     send(IPC_EVENTS.SET_PLAYING, !statusToBool(player.playbackStatus))
   });
 
+  player.on(MPRIS_EVENTS.PLAY, () => {
+    console.log(`MPRIS_EVENTS.PLAY`);
+    send(IPC_EVENTS.SET_PLAYING, true);
+  });
+
+  player.on(MPRIS_EVENTS.PAUSE, () => {
+    console.log(`MPRIS_EVENTS.PAUSE`);
+    send(IPC_EVENTS.SET_PLAYING, false);
+  });
+
   player.on(MPRIS_EVENTS.SKIP_BACK, () => {
     console.log("MPRIS_EVENTS.SKIP_BACK");
     send(IPC_EVENTS.SKIP_BACK);

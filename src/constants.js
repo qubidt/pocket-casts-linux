@@ -15,6 +15,8 @@ module.exports = {
     FOCUS: `raise`,
     QUIT: `quit`,
     PLAYPAUSE: `playpause`,
+    PLAY: `play`,
+    PAUSE: `pause`,
     SKIP_BACK: `previous`,
     SKIP_FORWARD: `next`,
   },
