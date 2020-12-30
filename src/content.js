@@ -8,19 +8,24 @@ require(`./reloader`);
 
 domLoaded.then(() => {
   const getControlsNode = () => select(`.player-controls > .controls`);
+
   let hasControlsNode = false;
 
   const observer = new MutationObserver(() => {
     const controlsNode = getControlsNode();
+
     if (!hasControlsNode && controlsNode) {
       ipcRenderer.send(IPC_EVENTS.PLAYER_READY);
       handlePlayerReady(controlsNode);
     }
+
     if (hasControlsNode && !controlsNode) {
       ipcRenderer.send(IPC_EVENTS.PLAYER_UNREADY);
     }
+
     hasControlsNode = !!controlsNode;
   });
+
   observer.observe(document.body, {
     childList: true,
     subtree: true,
@@ -41,7 +46,9 @@ domLoaded.then(() => {
 
 const handlePlayerReady = controlsNode => {
   const playBtn = select(`.play_pause_button`, controlsNode);
-  const isPlaying = () => playBtn.classList.contains(`pause_button`);
+  const isPlaying = () => {
+    return JSON.parse(playBtn.getAttribute(`aria-pressed`));
+  };
 
   const podcastImg = select(`.podcast-image img`, controlsNode);
   const episodeTitle = select(`.player_episode`, controlsNode);
@@ -70,7 +77,7 @@ const handlePlayerReady = controlsNode => {
   });
   playBtnObserver.observe(playBtn, {
     attributes: true,
-    attributeFilter: [`class`],
+    attributeFilter: [`aria-pressed`],
   });
 
   const episodeTitleObserver = new MutationObserver(() => {
