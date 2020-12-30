@@ -14,7 +14,7 @@ module.exports = {
   MPRIS_EVENTS: {
     FOCUS: `raise`,
     QUIT: `quit`,
-    IS_PLAYING_CHANGE: `playpause`,
+    PLAYPAUSE: `playpause`,
     SKIP_BACK: `previous`,
     SKIP_FORWARD: `next`,
   },
