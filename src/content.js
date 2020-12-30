@@ -44,7 +44,7 @@ domLoaded.then(() => {
   });
 });
 
-const handlePlayerReady = controlsNode => {
+const handlePlayerReady = (controlsNode) => {
   const playBtn = select(`.play_pause_button`, controlsNode);
   const isPlaying = () => {
     return JSON.parse(playBtn.getAttribute(`aria-pressed`));
