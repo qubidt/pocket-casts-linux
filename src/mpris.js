@@ -66,27 +66,27 @@ module.exports.init = window => {
   });
 
   player.on(MPRIS_EVENTS.PLAYPAUSE, () => {
-    console.log(`MPRIS_EVENTS.PLAYPAUSE: ${player.playbackStatus}`);
+    console.info(`MPRIS_EVENTS.PLAYPAUSE: ${player.playbackStatus}`);
     send(IPC_EVENTS.SET_PLAYING, !statusToBool(player.playbackStatus))
   });
 
   player.on(MPRIS_EVENTS.PLAY, () => {
-    console.log(`MPRIS_EVENTS.PLAY`);
+    console.info(`MPRIS_EVENTS.PLAY`);
     send(IPC_EVENTS.SET_PLAYING, true);
   });
 
   player.on(MPRIS_EVENTS.PAUSE, () => {
-    console.log(`MPRIS_EVENTS.PAUSE`);
+    console.info(`MPRIS_EVENTS.PAUSE`);
     send(IPC_EVENTS.SET_PLAYING, false);
   });
 
   player.on(MPRIS_EVENTS.SKIP_BACK, () => {
-    console.log("MPRIS_EVENTS.SKIP_BACK");
+    console.info(`MPRIS_EVENTS.SKIP_BACK`);
     send(IPC_EVENTS.SKIP_BACK);
   });
 
   player.on(MPRIS_EVENTS.SKIP_FORWARD, () => {
-    console.log("MPRIS_EVENTS.SKIP_FORWARD");
+    console.info(`MPRIS_EVENTS.SKIP_FORWARD`);
     send(IPC_EVENTS.SKIP_FORWARD);
-  })
+  });
 };
