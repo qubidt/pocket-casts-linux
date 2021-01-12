@@ -8,19 +8,26 @@ require(`./reloader`);
 
 domLoaded.then(() => {
   const getControlsNode = () => select(`.player-controls > .controls`);
+  const getAudio = () => select(`audio`);
+
   let hasControlsNode = false;
 
   const observer = new MutationObserver(() => {
     const controlsNode = getControlsNode();
+    const audio = getAudio();
+
     if (!hasControlsNode && controlsNode) {
       ipcRenderer.send(IPC_EVENTS.PLAYER_READY);
-      handlePlayerReady(controlsNode);
+      handlePlayerReady(audio, controlsNode);
     }
+
     if (hasControlsNode && !controlsNode) {
       ipcRenderer.send(IPC_EVENTS.PLAYER_UNREADY);
     }
+
     hasControlsNode = !!controlsNode;
   });
+
   observer.observe(document.body, {
     childList: true,
     subtree: true,
@@ -39,9 +46,9 @@ domLoaded.then(() => {
   });
 });
 
-const handlePlayerReady = controlsNode => {
+const handlePlayerReady = (audio, controlsNode) => {
   const playBtn = select(`.play_pause_button`, controlsNode);
-  const isPlaying = () => playBtn.classList.contains(`pause_button`);
+  const isPlaying = () => !audio.paused;
 
   const podcastImg = select(`.podcast-image img`, controlsNode);
   const episodeTitle = select(`.player_episode`, controlsNode);
@@ -58,19 +65,26 @@ const handlePlayerReady = controlsNode => {
   ipcRenderer.send(IPC_EVENTS.METADATA_CHANGE, getMetadata());
   ipcRenderer.send(IPC_EVENTS.IS_PLAYING_CHANGE, isPlaying());
 
-  ipcRenderer.on(
-    IPC_EVENTS.SET_PLAYING,
-    (ev, newPlaying) => isPlaying() !== newPlaying && playBtn.click()
-  );
+  ipcRenderer.on(IPC_EVENTS.SET_PLAYING, (ev, newPlaying) => {
+    console.info(
+      `IPC_EVENTS.SET_PLAYING: ${{ newPlaying, currentlyPlaying: isPlaying() }}`
+    );
+
+    if (isPlaying() !== newPlaying) {
+      playBtn.click();
+    }
+  });
   ipcRenderer.on(IPC_EVENTS.SKIP_BACK, () => skipBackBtn.click());
   ipcRenderer.on(IPC_EVENTS.SKIP_FORWARD, () => skipForwardBtn.click());
 
-  const playBtnObserver = new MutationObserver(() => {
-    ipcRenderer.send(IPC_EVENTS.IS_PLAYING_CHANGE, isPlaying());
+  audio.addEventListener(`playing`, () => {
+    console.info(`Audio Listener: Playing`);
+    ipcRenderer.send(IPC_EVENTS.IS_PLAYING_CHANGE, true);
   });
-  playBtnObserver.observe(playBtn, {
-    attributes: true,
-    attributeFilter: [`class`],
+
+  audio.addEventListener(`pause`, () => {
+    console.info(`Audio Listener: Pause`);
+    ipcRenderer.send(IPC_EVENTS.IS_PLAYING_CHANGE, false);
   });
 
   const episodeTitleObserver = new MutationObserver(() => {
