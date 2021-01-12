@@ -71,7 +71,7 @@ const handlePlayerReady = (audio, controlsNode) => {
     );
 
     if (isPlaying() !== newPlaying) {
-      playBtn.clikc();
+      playBtn.click();
     }
   });
   ipcRenderer.on(IPC_EVENTS.SKIP_BACK, () => skipBackBtn.click());
