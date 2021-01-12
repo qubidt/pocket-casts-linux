@@ -7,7 +7,15 @@ const { POCKET_CASTS_URL, IPC_EVENTS, APP_NAME } = require(`./constants`);
 
 require(`./reloader`);
 
+const acquireLock = () => {
+  if (!app.requestSingleInstanceLock()) {
+    app.quit();
+  }
+}
+
 const main = () => {
+  acquireLock();
+
   let window = null;
 
   const showWindow = () => {
@@ -54,8 +62,18 @@ const main = () => {
     });
   };
 
+  const restoreAndFocus = () => {
+    console.info('restore and focus');
+
+    if (window) {
+      if (window.isMinimized()) window.restore();
+      window.focus();
+    }
+  };
+
   app.on(`ready`, createWindow);
   app.on(`window-all-closed`, app.quit);
+  app.on(`second-instance`, restoreAndFocus);
 
   ipcMain.once(IPC_EVENTS.PLAYER_READY, () => require(`./mpris`).init(window));
 
