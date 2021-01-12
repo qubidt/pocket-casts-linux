@@ -1,12 +1,10 @@
-**⚠️ Currently not maintained ⚠️**
+# Pocket Casts for Linux
 
-As I stopped using Pocket Casts in favor of Spotify a while ago, I won't be
-actively developing Pocket Casts for Linux anymore. Feel free to fork the
-project though!
+**⚠️ This is a fork of the original [jgierer12/pocket-casts-linux](https://github.com/jgierer12/pocket-casts-linux) ⚠️**
+
+I've been fixing a few bugs here and there and do intend to release a new version soon.
 
 ---
-
-# Pocket Casts for Linux
 
 [Pocket Casts](https://www.pocketcasts.com) client with support for MPRIS (media
 controls).
