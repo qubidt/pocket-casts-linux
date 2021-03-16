@@ -30,15 +30,15 @@ const main = () => {
 
     window = new BrowserWindow(
       Object.assign(
-    {
-      show: false,
-      title: APP_NAME,
-      webPreferences: {
-        nodeIntegration: false,
-        contextIsolation: true,
-        preload: path.join(__dirname, `content.js`),
-      },
-    },
+        {
+          show: false,
+          title: APP_NAME,
+          webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+            preload: path.join(__dirname, `content.js`),
+          },
+        },
         windowState
       )
     );
