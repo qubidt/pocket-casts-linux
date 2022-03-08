@@ -29,5 +29,5 @@ module.exports = {
     },
   },
   APP_NAME: `Pocket Casts`,
-  POCKET_CASTS_URL: `https://playbeta.pocketcasts.com/web/`,
+  POCKET_CASTS_URL: `https://play.pocketcasts.com/podcasts`,
 };
